@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Building2, Trees, Home, Navigation, MapPin, Activity, HelpCircle, Save, Download } from 'lucide-react';
 import { GeoHealthResult } from '../types/api';
@@ -12,13 +12,26 @@ interface SidebarProps {
   loading: boolean;
   onSaveLocation: () => void;
   onExportPDF: () => void;
+  onLocationSubmit: (lat: number, lon: number) => void;
 }
 
 export function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
 }
 
-export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPDF }: SidebarProps) {
+export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPDF, onLocationSubmit }: SidebarProps) {
+  const [latInput, setLatInput] = useState('');
+  const [lonInput, setLonInput] = useState('');
+
+  const handleCoordinateSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const lat = parseFloat(latInput);
+    const lon = parseFloat(lonInput);
+    if (!isNaN(lat) && !isNaN(lon)) {
+      onLocationSubmit(lat, lon);
+    }
+  };
+
   const renderSMODIcon = (type?: string) => {
     switch (type) {
       case 'high-density urban':
@@ -118,6 +131,42 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
         </div>
       </div>
 
+      {/* Search Coordinates Form */}
+      <form onSubmit={handleCoordinateSubmit} className="p-5 border-b border-glass-border-dark flex flex-col gap-3">
+        <div className="flex gap-3">
+          <div className="flex-1">
+            <label className="text-xs text-slate-400 font-semibold mb-1 block">Latitude</label>
+            <input
+              type="number"
+              step="any"
+              value={latInput}
+              onChange={(e) => setLatInput(e.target.value)}
+              placeholder="e.g. 9.0820"
+              className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary-indigo transition-colors"
+              required
+            />
+          </div>
+          <div className="flex-1">
+            <label className="text-xs text-slate-400 font-semibold mb-1 block">Longitude</label>
+            <input
+              type="number"
+              step="any"
+              value={lonInput}
+              onChange={(e) => setLonInput(e.target.value)}
+              placeholder="e.g. 8.6753"
+              className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary-indigo transition-colors"
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-primary-indigo hover:bg-indigo-600 text-white font-medium py-2 rounded-lg transition-colors text-sm"
+        >
+          Search Coordinates
+        </button>
+      </form>
+
       {/* Content */}
       <div className="p-5 flex-1 flex flex-col gap-4">
         <AnimatePresence mode="wait">
@@ -141,7 +190,7 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
               className="text-center py-10 text-slate-400"
             >
               <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Click anywhere on the map or use the search bar to analyze a location in Nigeria.</p>
+              <p>Click anywhere on the map or enter coordinates below to analyze a location in Nigeria.</p>
             </motion.div>
           ) : (
             <motion.div
