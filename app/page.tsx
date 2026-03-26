@@ -16,8 +16,10 @@ export default function Home() {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [savedLocations, setSavedLocations] = useState<GeoHealthResult[]>([]);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  const [selectedCoords, setSelectedCoords] = useState<{lat: number, lon: number} | null>(null);
 
   const handleLocationSelect = async (lat: number, lon: number) => {
+    setSelectedCoords({lat, lon});
     if (!isMapLoaded) return;
 
     setLoading(true);
@@ -77,6 +79,7 @@ export default function Home() {
         apiResult={apiResult}
         isMapLoaded={isMapLoaded}
         setIsMapLoaded={setIsMapLoaded}
+        selectedCoords={selectedCoords}
       />
 
       <Sidebar
@@ -84,6 +87,7 @@ export default function Home() {
         loading={loading}
         onSaveLocation={handleSaveLocation}
         onExportPDF={handleExportPDF}
+        onLocationSubmit={handleLocationSelect}
       />
 
       {/* Map Legend */}
