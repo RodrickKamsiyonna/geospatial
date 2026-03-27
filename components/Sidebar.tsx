@@ -75,11 +75,11 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
 
     return (
       <div className="w-full mt-4">
-        <div className="flex justify-between text-xs mb-1 text-slate-400">
+        <div className="flex justify-between text-xs mb-1 text-slate-500">
           <span>0 (Underserved)</span>
           <span>200+ (Overserved)</span>
         </div>
-        <div className="h-3 w-full bg-slate-800 rounded-full overflow-hidden">
+        <div className="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${percentage}%` }}
@@ -99,34 +99,34 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
       initial={{ x: -400, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className="absolute top-4 left-4 z-10 w-full max-w-sm sm:max-w-md max-h-[calc(100vh-2rem)] overflow-y-auto glass-dark rounded-2xl flex flex-col hide-scrollbar"
+      className="absolute top-4 left-4 z-10 w-full max-w-sm sm:max-w-md max-h-[calc(100vh-2rem)] overflow-y-auto bg-white/95 backdrop-blur-md shadow-xl border border-slate-200 rounded-2xl flex flex-col hide-scrollbar"
       id="export-content"
     >
       {/* Header */}
-      <div className="p-5 border-b border-glass-border-dark flex items-center justify-between sticky top-0 glass-dark z-20">
+      <div className="p-5 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white/95 backdrop-blur-md z-20">
         <div>
-          <h1 className="text-xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-xl font-bold text-slate-900 flex items-center gap-2">
             <Activity className="w-6 h-6 text-primary-indigo" />
             GeoHealth V1
           </h1>
-          <p className="text-xs text-slate-400 mt-1">SMOD & Accessibility Classifier</p>
+          <p className="text-xs text-slate-500 mt-1">SMOD & Accessibility Classifier</p>
         </div>
         <div className="flex gap-2">
             <button
                 onClick={onSaveLocation}
                 disabled={!apiResult || loading}
-                className="p-2 rounded-full hover:bg-white/10 transition-colors disabled:opacity-50"
+                className="p-2 rounded-full hover:bg-slate-100 transition-colors disabled:opacity-50"
                 title="Save Location to Compare"
             >
-                <Save className="w-5 h-5 text-slate-300" />
+                <Save className="w-5 h-5 text-slate-600" />
             </button>
             <button
                 onClick={onExportPDF}
                 disabled={!apiResult || loading}
-                className="p-2 rounded-full hover:bg-white/10 transition-colors disabled:opacity-50"
+                className="p-2 rounded-full hover:bg-slate-100 transition-colors disabled:opacity-50"
                 title="Export Report"
             >
-                <Download className="w-5 h-5 text-slate-300" />
+                <Download className="w-5 h-5 text-slate-600" />
             </button>
         </div>
       </div>
@@ -179,7 +179,7 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
               className="flex flex-col items-center justify-center py-10"
             >
               <div className="w-10 h-10 border-4 border-primary-indigo border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="text-slate-400 animate-pulse">Analyzing Location...</p>
+              <p className="text-slate-500 animate-pulse">Analyzing Location...</p>
             </motion.div>
           ) : !apiResult ? (
             <motion.div
@@ -187,7 +187,7 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-center py-10 text-slate-400"
+              className="text-center py-10 text-slate-500"
             >
               <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>Click anywhere on the map or enter coordinates below to analyze a location in Nigeria.</p>
@@ -201,37 +201,37 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
               className="flex flex-col gap-5"
             >
               {/* Address / Coordinates */}
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-glass-border-dark">
-                <h3 className="text-xs uppercase text-slate-400 font-semibold mb-1">Selected Location</h3>
-                <p className="font-medium text-white text-sm line-clamp-2">{apiResult.address}</p>
-                <div className="flex gap-4 mt-2 text-xs font-mono text-slate-400">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <h3 className="text-xs uppercase text-slate-500 font-semibold mb-1">Selected Location</h3>
+                <p className="font-medium text-slate-900 text-sm line-clamp-2">{apiResult.address}</p>
+                <div className="flex gap-4 mt-2 text-xs font-mono text-slate-500">
                   <span>Lat: {apiResult.lat.toFixed(4)}</span>
                   <span>Lon: {apiResult.lon.toFixed(4)}</span>
                 </div>
               </div>
 
               {/* Classification Card */}
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-glass-border-dark relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-20 pointer-events-none">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
                     {renderSMODIcon(apiResult.classify?.location_type)}
                 </div>
-                <h3 className="text-xs uppercase text-slate-400 font-semibold mb-2">SMOD Classification</h3>
+                <h3 className="text-xs uppercase text-slate-500 font-semibold mb-2">SMOD Classification</h3>
                 <div className="flex items-center gap-3 mb-1">
-                  <span className="text-2xl font-bold capitalize text-white">
+                  <span className="text-2xl font-bold capitalize text-slate-900">
                     {apiResult.classify?.location_type || 'Unknown'}
                   </span>
                 </div>
-                <p className="text-sm text-slate-300">
+                <p className="text-sm text-slate-600">
                   {apiResult.classify?.classification_reason || 'No data available'}
                 </p>
-                <div className="mt-3 inline-block px-2 py-1 rounded bg-black/30 text-xs font-mono text-slate-400">
+                <div className="mt-3 inline-block px-2 py-1 rounded bg-slate-100 text-xs font-mono text-slate-500">
                    Code: {apiResult.classify?.smod_code ?? 'N/A'}
                 </div>
               </div>
 
               {/* Accessibility Card */}
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-glass-border-dark">
-                <h3 className="text-xs uppercase text-slate-400 font-semibold mb-2">Health Accessibility</h3>
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <h3 className="text-xs uppercase text-slate-500 font-semibold mb-2">Health Accessibility</h3>
                 <div className="flex items-end justify-between">
                   <div>
                     <span className={cn("text-xl font-bold capitalize", getStatusColor(apiResult.accessibility?.status))}>
@@ -239,48 +239,48 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm text-slate-300 font-medium">
+                    <span className="text-sm text-slate-600 font-medium">
                       {apiResult.accessibility?.facilities_per_100k?.toFixed(1) || '0'}
                     </span>
-                    <span className="text-xs text-slate-400 block">Facilities / 100k</span>
+                    <span className="text-xs text-slate-500 block">Facilities / 100k</span>
                   </div>
                 </div>
                 {renderGauge(apiResult.accessibility?.accessibility_score ?? null, apiResult.accessibility?.status)}
               </div>
 
               {/* Nearest Facility Card */}
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-glass-border-dark">
-                <h3 className="text-xs uppercase text-slate-400 font-semibold mb-3 flex items-center gap-2">
-                    <Navigation className="w-4 h-4" />
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <h3 className="text-xs uppercase text-slate-500 font-semibold mb-3 flex items-center gap-2">
+                    <Navigation className="w-4 h-4 text-slate-400" />
                     Nearest Facility
                 </h3>
 
                 {apiResult.nearestFacility ? (
                     <div className="space-y-3">
-                        <p className="font-semibold text-white text-lg leading-tight">
+                        <p className="font-semibold text-slate-900 text-lg leading-tight">
                             {apiResult.nearestFacility.facility_name}
                         </p>
 
                         <div className="grid grid-cols-2 gap-2">
-                            <div className="bg-black/30 p-2 rounded-lg text-center">
-                                <span className="block text-xs text-slate-400 mb-1">Drive Dist.</span>
+                            <div className="bg-slate-50 p-2 rounded-lg text-center border border-slate-100">
+                                <span className="block text-xs text-slate-500 mb-1">Drive Dist.</span>
                                 <span className="font-mono text-sm text-primary-emerald font-semibold">
                                     {apiResult.nearestFacility.driving_distance_km ? `${apiResult.nearestFacility.driving_distance_km} km` : 'N/A'}
                                 </span>
                             </div>
-                            <div className="bg-black/30 p-2 rounded-lg text-center">
-                                <span className="block text-xs text-slate-400 mb-1">Est. Time</span>
+                            <div className="bg-slate-50 p-2 rounded-lg text-center border border-slate-100">
+                                <span className="block text-xs text-slate-500 mb-1">Est. Time</span>
                                 <span className="font-mono text-sm text-primary-indigo font-semibold">
                                     {apiResult.nearestFacility.travel_time_minutes ? `${apiResult.nearestFacility.travel_time_minutes} min` : 'N/A'}
                                 </span>
                             </div>
                         </div>
-                        <div className="text-xs text-slate-500 text-center mt-2">
+                        <div className="text-xs text-slate-400 text-center mt-2">
                              Straight line: {apiResult.nearestFacility.straight_line_distance_km} km
                         </div>
                     </div>
                 ) : (
-                    <p className="text-sm text-slate-400">No facility data available.</p>
+                    <p className="text-sm text-slate-500">No facility data available.</p>
                 )}
               </div>
             </motion.div>

@@ -50,7 +50,7 @@ export default function Map({ onLocationSelect, apiResult, isMapLoaded, setIsMap
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: 'mapbox://styles/mapbox/light-v11',
       center: [8.6753, 9.0820], // Center on Nigeria
       zoom: 5.5,
       pitch: 45, // Add a bit of 3D tilt
@@ -282,8 +282,8 @@ export default function Map({ onLocationSelect, apiResult, isMapLoaded, setIsMap
 
   return (
     <div className="absolute inset-0 w-full h-full">
-      {/* Fallback dark background while map loads */}
-      <div className="absolute inset-0 bg-slate-950 -z-10" />
+      {/* Fallback light background while map loads */}
+      <div className="absolute inset-0 bg-slate-50 -z-10" />
       <div ref={mapContainer} className="w-full h-full" />
     </div>
   );
