@@ -46,7 +46,7 @@ export const fetchAllGeoHealthData = async (lat: number, lon: number): Promise<G
       address = feature.properties.full_address || feature.properties.name || feature.properties.place_formatted || 'Unknown Location';
     }
 
-    return {
+    const finalResult = {
       lat,
       lon,
       classify: classify.status === 'fulfilled' ? classify.value : null,
@@ -54,6 +54,8 @@ export const fetchAllGeoHealthData = async (lat: number, lon: number): Promise<G
       nearestFacility: nearestFacility.status === 'fulfilled' ? nearestFacility.value : null,
       address,
     };
+    console.log("FETCH_ALL_RESULT:", finalResult);
+    return finalResult;
   } catch (error) {
     console.error("Error fetching GeoHealth data:", error);
     throw error;
