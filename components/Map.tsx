@@ -3,8 +3,6 @@
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { GeoHealthResult } from '../types/api';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
@@ -14,9 +12,10 @@ interface MapProps {
   apiResult: GeoHealthResult | null;
   isMapLoaded: boolean;
   setIsMapLoaded: (loaded: boolean) => void;
+  selectedCoords?: { lat: number, lon: number } | null;
 }
 
-export default function Map({ onLocationSelect, apiResult, isMapLoaded, setIsMapLoaded }: MapProps) {
+export default function Map({ onLocationSelect, apiResult, isMapLoaded, setIsMapLoaded, selectedCoords }: MapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const userMarker = useRef<mapboxgl.Marker | null>(null);
@@ -51,22 +50,12 @@ export default function Map({ onLocationSelect, apiResult, isMapLoaded, setIsMap
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: 'mapbox://styles/mapbox/light-v11',
       center: [8.6753, 9.0820], // Center on Nigeria
       zoom: 5.5,
       pitch: 45, // Add a bit of 3D tilt
     });
 
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      mapboxgl: mapboxgl as any,
-      marker: false, // We'll handle our own marker
-      countries: 'ng', // Restrict to Nigeria
-      placeholder: 'Search for a location in Nigeria...',
-    });
-
-    map.current.addControl(geocoder, 'top-left');
     map.current.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), 'bottom-right');
 
     map.current.on('load', () => {
@@ -112,13 +101,6 @@ export default function Map({ onLocationSelect, apiResult, isMapLoaded, setIsMap
     // Handle map clicks
     map.current.on('click', (e) => {
       const { lng, lat } = e.lngLat;
-      updateUserMarker(lng, lat);
-      onLocationSelect(lat, lng);
-    });
-
-    // Handle geocoder search results
-    geocoder.on('result', (e) => {
-      const [lng, lat] = e.result.center;
       updateUserMarker(lng, lat);
       onLocationSelect(lat, lng);
     });
@@ -289,13 +271,19 @@ export default function Map({ onLocationSelect, apiResult, isMapLoaded, setIsMap
          userMarker.current = null;
        }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiResult, isMapLoaded]);
+
+  // Handle Updates from selectedCoords
+  useEffect(() => {
+    if (selectedCoords && isMapLoaded) {
+      updateUserMarker(selectedCoords.lon, selectedCoords.lat);
+    }
+  }, [selectedCoords, isMapLoaded]);
 
   return (
     <div className="absolute inset-0 w-full h-full">
-      {/* Fallback dark background while map loads */}
-      <div className="absolute inset-0 bg-slate-950 -z-10" />
+      {/* Fallback light background while map loads */}
+      <div className="absolute inset-0 bg-slate-50 -z-10" />
       <div ref={mapContainer} className="w-full h-full" />
     </div>
   );
