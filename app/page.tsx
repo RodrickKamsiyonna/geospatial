@@ -20,8 +20,7 @@ export default function Home() {
 
   const handleLocationSelect = async (lat: number, lon: number) => {
     setSelectedCoords({lat, lon});
-    // Removed `if (!isMapLoaded) return;` to ensure APIs still run
-    // even if the Mapbox map fails to load (e.g., missing API token)
+    if (!isMapLoaded) return;
 
     setLoading(true);
     try {
