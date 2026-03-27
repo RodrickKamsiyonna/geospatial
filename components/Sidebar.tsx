@@ -132,29 +132,29 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
       </div>
 
       {/* Search Coordinates Form */}
-      <form onSubmit={handleCoordinateSubmit} className="p-5 border-b border-slate-200 flex flex-col gap-3">
+      <form onSubmit={handleCoordinateSubmit} className="p-5 border-b border-glass-border-dark flex flex-col gap-3">
         <div className="flex gap-3">
           <div className="flex-1">
-            <label className="text-xs text-slate-500 font-semibold mb-1 block">Latitude</label>
+            <label className="text-xs text-slate-400 font-semibold mb-1 block">Latitude</label>
             <input
               type="number"
               step="any"
               value={latInput}
               onChange={(e) => setLatInput(e.target.value)}
               placeholder="e.g. 9.0820"
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary-indigo transition-colors"
+              className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary-indigo transition-colors"
               required
             />
           </div>
           <div className="flex-1">
-            <label className="text-xs text-slate-500 font-semibold mb-1 block">Longitude</label>
+            <label className="text-xs text-slate-400 font-semibold mb-1 block">Longitude</label>
             <input
               type="number"
               step="any"
               value={lonInput}
               onChange={(e) => setLonInput(e.target.value)}
               placeholder="e.g. 8.6753"
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary-indigo transition-colors"
+              className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary-indigo transition-colors"
               required
             />
           </div>
@@ -189,7 +189,7 @@ export default function Sidebar({ apiResult, loading, onSaveLocation, onExportPD
               exit={{ opacity: 0 }}
               className="text-center py-10 text-slate-500"
             >
-              <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50 text-slate-400" />
+              <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>Click anywhere on the map or enter coordinates below to analyze a location in Nigeria.</p>
             </motion.div>
           ) : (
